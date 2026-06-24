@@ -11,29 +11,43 @@ namespace ArchaeologicalSiteManagement.Services
 	{
 		List<ArchaeologicalSite> _sites;
 
-		public List<ArchaeologicalSite> GetAll()
+        public SiteRepository()
+        {
+            _sites = new List<ArchaeologicalSite>
+            {
+                new ArchaeologicalSite { Id = Guid.NewGuid(), Name = "Viminacium", Location = "Kostolac", Civilization = "Rimska", DiscoveryYear = 1882, SiteType = "Nekropola" },
+                new ArchaeologicalSite { Id = Guid.NewGuid(), Name = "Lepenski Vir", Location = "Boljetin", Civilization = "Mezolitska", DiscoveryYear = 1965, SiteType = "Naselje" },
+                new ArchaeologicalSite { Id = Guid.NewGuid(), Name = "Felix Romuliana", Location = "Gamzigrad", Civilization = "Rimska", DiscoveryYear = 1953, SiteType = "Utvrdjenje" }
+            };
+        }
+
+        public List<ArchaeologicalSite> GetAll()
 		{
-			throw new NotImplementedException();
+			return _sites;
 		}
 
 		public ArchaeologicalSite GetById(Guid id)
 		{
-			throw new NotImplementedException();
-		}
+            return _sites.FirstOrDefault(s => s.Id == id);
+        }
 
 		public void Add(ArchaeologicalSite site)
 		{
-			throw new NotImplementedException();
-		}
+            site.Id = Guid.NewGuid();
+			_sites.Add(site);
+
+        }
 
 		public void Update(ArchaeologicalSite site)
 		{
-			throw new NotImplementedException();
-		}
+            int index = _sites.FindIndex(s => s.Id == site.Id);
+            if (index >= 0)
+                _sites[index] = site;
+        }
 
 		public void Delete(Guid id)
 		{
-			throw new NotImplementedException();
-		}
+            _sites.RemoveAll(s => s.Id == id);
+        }
 	}
 }

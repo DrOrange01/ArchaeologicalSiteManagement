@@ -1,8 +1,9 @@
+using ArchaeologicalSiteManagement.Interfaces;
+using ArchaeologicalSiteManagement.Models;
+using ArchaeologicalSiteManagement.Services.States;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using ArchaeologicalSiteManagement.Models;
-using ArchaeologicalSiteManagement.Interfaces;
 
 namespace ArchaeologicalSiteManagement.Services
 {
@@ -11,49 +12,70 @@ namespace ArchaeologicalSiteManagement.Services
 		List<ExcavationRecord> _records;
 		List<IObserver> _observers;
 
-		public List<ExcavationRecord> GetAll()
+        public ExcavationRepository()
+        {
+            _observers = new List<IObserver>();
+            _records = new List<ExcavationRecord>
+            {
+                new ExcavationRecord { Id = Guid.NewGuid(), SiteId = Guid.Empty, ExcavationDate = new DateTime(2024, 5, 10), AreaExcavatedM2 = 12.5, ArtifactsFound = 7, DepthReachedCm = 180, State = ExcavationState.Active },
+                new ExcavationRecord { Id = Guid.NewGuid(), SiteId = Guid.Empty, ExcavationDate = new DateTime(2024, 6, 15), AreaExcavatedM2 = 8.0, ArtifactsFound = 3, DepthReachedCm = 145, State = ExcavationState.Paused },
+                new ExcavationRecord { Id = Guid.NewGuid(), SiteId = Guid.Empty, ExcavationDate = new DateTime(2024, 7, 20), AreaExcavatedM2 = 20.0, ArtifactsFound = 12, DepthReachedCm = 210, State = ExcavationState.Completed }
+            };
+
+            foreach (var record in _records)
+                record.SetState(new ActiveState(record));
+        }
+        public List<ExcavationRecord> GetAll()
 		{
-			throw new NotImplementedException();
-		}
+            return _records;
+        }
 
 		public List<ExcavationRecord> GetBySiteId(Guid siteId)
 		{
-			throw new NotImplementedException();
-		}
+            return _records.Where(r => r.SiteId == siteId).ToList();
+        }
 
 		public List<ExcavationRecord> GetBySiteIdAndYear(Guid siteId, int year)
 		{
-			throw new NotImplementedException();
-		}
+            return _records.Where(r => r.SiteId == siteId && r.ExcavationDate.Year == year).ToList();
+        }
 
 		public void Add(ExcavationRecord record)
 		{
-			throw new NotImplementedException();
-		}
+            record.Id = Guid.NewGuid();
+            record.SetState(new ActiveState(record));
+            _records.Add(record);
+            NotifyObservers();
+        }
 
 		public void Update(ExcavationRecord record)
 		{
-			throw new NotImplementedException();
-		}
+            int index = _records.FindIndex(r => r.Id == record.Id);
+            if (index >= 0)
+                _records[index] = record;
+            NotifyObservers();
+        }
 
 		public void Delete(Guid id)
 		{
-			throw new NotImplementedException();
-		}
+            _records.RemoveAll(r => r.Id == id);
+            NotifyObservers();
+        }
 
 		public void RegisterObserver(IObserver o)
 		{
-			throw new NotImplementedException();
-		}
+            _observers.Add(o);
+        }
 
 		public void UnregisterObserver(IObserver o)
 		{
-			throw new NotImplementedException();
-		}
+            _observers.Remove(o);
+        }
 
 		public void NotifyObservers()
 		{
-			throw new NotImplementedException();
-		}
+            foreach (var observer in _observers)
+                observer.Update(_records);
+        }
 	}
 }
