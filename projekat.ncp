@@ -68,7 +68,7 @@
         <Location left="153" top="10" />
         <Size width="184" height="216" />
         <Collapsed>False</Collapsed>
-        <Member type="Property">public guid Id { get; set; }</Member>
+        <Member type="Property">public Guid Id { get; set; }</Member>
         <Member type="Property">public string Name { get; set; }</Member>
         <Member type="Property">public string Location { get; set; }</Member>
         <Member type="Property">public string Civilization { get; set; }</Member>
@@ -82,8 +82,8 @@
         <Location left="133" top="297" />
         <Size width="281" height="253" />
         <Collapsed>False</Collapsed>
-        <Member type="Property">public guid Id { get; set; }</Member>
-        <Member type="Property">public guid SiteId { get; set; }</Member>
+        <Member type="Property">public Guid Id { get; set; }</Member>
+        <Member type="Property">public Guid SiteId { get; set; }</Member>
         <Member type="Property">public DateTime ExcavationDate { get; set; }</Member>
         <Member type="Property">public double AreaExcavatedM2 { get; set; }</Member>
         <Member type="Property">public double ArtifactsFound { get; set; }</Member>
@@ -205,7 +205,7 @@
         <Size width="162" height="216" />
         <Collapsed>False</Collapsed>
         <Member type="Field">List&lt;ExcavationRecord&gt; _records</Member>
-        <Member type="Method">public override void Update(List&lt;ExcavationRecord&gt; records)</Member>
+        <Member type="Method">public void Update(List&lt;ExcavationRecord&gt; records)</Member>
         <Member type="Method">public void RefreshChart()</Member>
         <Modifier>None</Modifier>
       </Entity>
@@ -253,7 +253,7 @@
       <Entity type="Class">
         <Name>ArchaeologicalService</Name>
         <Access>Public</Access>
-        <Location left="1349" top="1721" />
+        <Location left="1351" top="1721" />
         <Size width="162" height="216" />
         <Collapsed>False</Collapsed>
         <Member type="Field">ISiteRepository _siteRepository</Member>
@@ -271,6 +271,26 @@
         <Member type="Method">public override void Execute()</Member>
         <Member type="Method">public override void Undo()</Member>
         <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>PersistenceService</Name>
+        <Access>Public</Access>
+        <Location left="1668" top="54" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">string _filePath</Member>
+        <Member type="Method">public void Save(List&lt;ArchaeologicalSite&gt; sites, List&lt;ExcavationRecord&gt; records)</Member>
+        <Member type="Method">public void Load()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IArchaeologicalService</Name>
+        <Access>Public</Access>
+        <Location left="1351" top="1414" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">List&lt;ArchaeologicalSite&gt; GetAllSites()</Member>
+        <Member type="Method">List&lt;ExcavationRecord&gt; GetExcavationRecords(Guid siteId, int year)</Member>
       </Entity>
     </Entities>
     <Relationships>
@@ -314,10 +334,6 @@
         <Direction>Unidirectional</Direction>
         <AssociationType>Association</AssociationType>
       </Relationship>
-      <Relationship type="Realization" first="13" second="12">
-        <StartOrientation>Vertical</StartOrientation>
-        <EndOrientation>Vertical</EndOrientation>
-      </Relationship>
       <Relationship type="Association" first="1" second="13">
         <Label>
         </Label>
@@ -356,7 +372,7 @@
         <StartOrientation>Horizontal</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>1291</X>
+          <X>1293</X>
           <Y>1905</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
@@ -370,7 +386,7 @@
         <StartOrientation>Horizontal</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>1317</X>
+          <X>1319</X>
           <Y>1826</Y>
         </BendPoint>
         <BendPoint relativeToStartShape="False">
@@ -539,6 +555,22 @@
         </BendPoint>
         <Direction>Unidirectional</Direction>
         <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="13" second="12">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="22" second="12">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="20" second="23">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
       </Relationship>
     </Relationships>
   </ProjectItem>
