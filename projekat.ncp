@@ -1,0 +1,545 @@
+<Project>
+  <Name>projekat</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>KomponentaJedan</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Interface">
+        <Name>ISiteRepository</Name>
+        <Access>Public</Access>
+        <Location left="914" top="54" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">List&lt;ArchaeologicalSite&gt; GetAll()</Member>
+        <Member type="Method">ArchaeologicalSite GetById(Guid id)</Member>
+        <Member type="Method">void Add(ArchaeologicalSite site)</Member>
+        <Member type="Method">void Update(ArchaeologicalSite site)</Member>
+        <Member type="Method">void Delete(Guid id)</Member>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IExcavationRepository</Name>
+        <Access>Public</Access>
+        <Location left="914" top="599" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">List&lt;ExcavationRecord&gt; GetAll()</Member>
+        <Member type="Method">List&lt;ExcavationRecord&gt; GetBySiteId(Guid siteId)</Member>
+        <Member type="Method">List&lt;ExcavationRecord&gt; GetBySiteIdAndYear(Guid siteId, int year)</Member>
+        <Member type="Method">void Add(ExcavationRecord record)</Member>
+        <Member type="Method">void Update(ExcavationRecord record)</Member>
+        <Member type="Method">void Delete(Guid id)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>SiteRepository</Name>
+        <Access>Public</Access>
+        <Location left="912" top="343" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">List&lt;ArchaeologicalSite&gt; _sites</Member>
+        <Member type="Method">public List&lt;ArchaeologicalSite&gt; GetAll()</Member>
+        <Member type="Method">public ArchaeologicalSite GetById(Guid id)</Member>
+        <Member type="Method">public void Add(ArchaeologicalSite site)</Member>
+        <Member type="Method">public void Update(ArchaeologicalSite site)</Member>
+        <Member type="Method">public void Delete(Guid id)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ExcavationRepository</Name>
+        <Access>Public</Access>
+        <Location left="912" top="872" />
+        <Size width="162" height="264" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">List&lt;ExcavationRecord&gt; _records</Member>
+        <Member type="Field">List&lt;IObserver&gt; _observers</Member>
+        <Member type="Method">public List&lt;ExcavationRecord&gt; GetAll()</Member>
+        <Member type="Method">public List&lt;ExcavationRecord&gt; GetBySiteId(Guid siteId)</Member>
+        <Member type="Method">public List&lt;ExcavationRecord&gt; GetBySiteIdAndYear(Guid siteId, int year)</Member>
+        <Member type="Method">public void Add(ExcavationRecord record)</Member>
+        <Member type="Method">public void Update(ExcavationRecord record)</Member>
+        <Member type="Method">public void Delete(Guid id)</Member>
+        <Member type="Method">public void RegisterObserver(IObserver o)</Member>
+        <Member type="Method">public void UnregisterObserver(IObserver o)</Member>
+        <Member type="Method">public void NotifyObservers()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArchaeologicalSite</Name>
+        <Access>Public</Access>
+        <Location left="153" top="10" />
+        <Size width="184" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public guid Id { get; set; }</Member>
+        <Member type="Property">public string Name { get; set; }</Member>
+        <Member type="Property">public string Location { get; set; }</Member>
+        <Member type="Property">public string Civilization { get; set; }</Member>
+        <Member type="Property">public int DiscoveryYear { get; set; }</Member>
+        <Member type="Property">public string SiteType { get; set; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ExcavationRecord</Name>
+        <Access>Public</Access>
+        <Location left="133" top="297" />
+        <Size width="281" height="253" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public guid Id { get; set; }</Member>
+        <Member type="Property">public guid SiteId { get; set; }</Member>
+        <Member type="Property">public DateTime ExcavationDate { get; set; }</Member>
+        <Member type="Property">public double AreaExcavatedM2 { get; set; }</Member>
+        <Member type="Property">public double ArtifactsFound { get; set; }</Member>
+        <Member type="Property">public double DepthReachedCm { get; set; }</Member>
+        <Member type="Property">private ExcavationState state { get; set; }</Member>
+        <Member type="Method">public void SetState(ExcavationStateBase newState)</Member>
+        <Member type="Method">public void SimulateNext()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Enum">
+        <Name>ExcavationState</Name>
+        <Access>Public</Access>
+        <Location left="550" top="297" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Value>Active</Value>
+        <Value>Paused</Value>
+        <Value>Completed</Value>
+        <Value>Abandoned</Value>
+      </Entity>
+      <Entity type="Class">
+        <Name>ExcavationStateBase</Name>
+        <Access>Public</Access>
+        <Location left="133" top="652" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">protected ExcavationRecord _record</Member>
+        <Member type="Method">public abstract void Handle()</Member>
+        <Member type="Method">protected abstract void StateChangeCheck()</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ActiveState</Name>
+        <Access>Public</Access>
+        <Location left="33" top="935" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public override void Handle()</Member>
+        <Member type="Method">protected override void StateChangeCheck()</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>PausedState</Name>
+        <Access>Public</Access>
+        <Location left="228" top="935" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public override void Handle()</Member>
+        <Member type="Method">protected override void StateChangeCheck()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>CompletedState</Name>
+        <Access>Public</Access>
+        <Location left="433" top="935" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public override void Handle()</Member>
+        <Member type="Method">protected override void StateChangeCheck()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>AbandonedState</Name>
+        <Access>Public</Access>
+        <Location left="625" top="935" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public override void Handle()</Member>
+        <Member type="Method">protected override void StateChangeCheck()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IPersistenceService</Name>
+        <Access>Public</Access>
+        <Location left="1392" top="54" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Save(List&lt;ArchaeologicalSite&gt; sites, List&lt;ExcavationRecord&gt; records)</Member>
+        <Member type="Method">void Load()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>MainViewModel</Name>
+        <Access>Public</Access>
+        <Location left="1392" top="362" />
+        <Size width="231" height="383" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">ISiteRepository _siteRepository</Member>
+        <Member type="Field">IExcavationRepository _excRepository</Member>
+        <Member type="Field">IPersistenceService _persistenceService</Member>
+        <Member type="Field">Stack&lt;ICommand&gt; _undoStack</Member>
+        <Member type="Field">Stack&lt;ICommand&gt; _redoStack</Member>
+        <Member type="Property">public ObservableCollection&lt;ArchaeologicalSite&gt; Sites { get; set; }</Member>
+        <Member type="Property">public ObservableCollection&lt;ExcavationRecord&gt; Records { get; set; }</Member>
+        <Member type="Method">public void AddSite()</Member>
+        <Member type="Method">public void UpdateSite()</Member>
+        <Member type="Method">public void DeleteSite()</Member>
+        <Member type="Method">public void AddRecord()</Member>
+        <Member type="Method">public void UpdateRecord()</Member>
+        <Member type="Method">public void DeleteRecord()</Member>
+        <Member type="Method">public void Undo()</Member>
+        <Member type="Method">public void Redo()</Member>
+        <Member type="Method">public void ExecuteCommand(ICommand cmd)</Member>
+        <Member type="Method">public void LoadData()</Member>
+        <Member type="Method">public void SaveData()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IObserver</Name>
+        <Access>Public</Access>
+        <Location left="1455" top="890" />
+        <Size width="162" height="148" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Update(List&lt;ExcavationRecord&gt; records)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>ChartViewModel</Name>
+        <Access>Public</Access>
+        <Location left="1455" top="1085" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">List&lt;ExcavationRecord&gt; _records</Member>
+        <Member type="Method">public override void Update(List&lt;ExcavationRecord&gt; records)</Member>
+        <Member type="Method">public void RefreshChart()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>ICommand</Name>
+        <Access>Public</Access>
+        <Location left="912" top="1166" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Execute()</Member>
+        <Member type="Method">void Undo()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>SiteCommand</Name>
+        <Access>Public</Access>
+        <Location left="912" top="1435" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">protected ISiteRepository _repository</Member>
+        <Member type="Field">protected ArchaeologicalSite _site</Member>
+        <Member type="Method">public abstract void Execute()</Member>
+        <Member type="Method">public abstract void Undo()</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>AddSiteCmd</Name>
+        <Access>Public</Access>
+        <Location left="497" top="1721" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public override void Execute()</Member>
+        <Member type="Method">public override void Undo()</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>EditSiteCmd</Name>
+        <Access>Public</Access>
+        <Location left="748" top="1721" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public override void Execute()</Member>
+        <Member type="Method">public override void Undo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArchaeologicalService</Name>
+        <Access>Public</Access>
+        <Location left="1349" top="1721" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">ISiteRepository _siteRepository</Member>
+        <Member type="Field">IExcavationRepository _excRepository</Member>
+        <Member type="Method">public List&lt;ArchaeologicalSite&gt; GetAllSites()</Member>
+        <Member type="Method">public List&lt;ExcavationRecord&gt; GetExcavationRecords(Guid siteId, int year)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>DeleteSiteCmd</Name>
+        <Access>Public</Access>
+        <Location left="968" top="1721" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public override void Execute()</Member>
+        <Member type="Method">public override void Undo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Realization" first="2" second="0">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="3" second="1">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Generalization" first="8" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Generalization" first="9" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Generalization" first="10" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Generalization" first="11" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="0" second="13">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1101</X>
+          <Y>162</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1363</X>
+          <Y>471</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="13" second="12">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="1" second="13">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1101</X>
+          <Y>691</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1365</X>
+          <Y>472</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="15" second="14">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1642</X>
+          <Y>1180</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="3" second="14">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="20" second="1">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1291</X>
+          <Y>1905</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1101</X>
+          <Y>753</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="20" second="0">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1317</X>
+          <Y>1826</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1101</X>
+          <Y>220</Y>
+        </BendPoint>
+        <Direction>Bidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="6" second="5">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>518</X>
+          <Y>431</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>449</X>
+          <Y>431</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="5" second="7">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>228</X>
+          <Y>617</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>228</X>
+          <Y>624</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="17" second="16">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>990</X>
+          <Y>1423</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Generalization" first="18" second="17">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Generalization" first="19" second="17">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>837</X>
+          <Y>1696</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>993</X>
+          <Y>1676</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="17" second="0">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>872</X>
+          <Y>1526</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>883</X>
+          <Y>155</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="13" second="16">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1749</X>
+          <Y>497</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1138</X>
+          <Y>1333</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Generalization" first="21" second="17">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1076</X>
+          <Y>1696</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>993</X>
+          <Y>1681</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="3" second="5">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>887</X>
+          <Y>862</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>355</X>
+          <Y>578</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="2" second="4">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>816</X>
+          <Y>242</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>386</X>
+          <Y>170</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="5" second="4">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>261</X>
+          <Y>252</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="17" second="4">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>887</X>
+          <Y>1565</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>791</X>
+          <Y>83</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
