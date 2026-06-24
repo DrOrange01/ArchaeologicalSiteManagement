@@ -1,3 +1,4 @@
+using ArchaeologicalSiteManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,14 +7,19 @@ namespace ArchaeologicalSiteManagement.Services.States
 {
 	public class PausedState : ExcavationStateBase
 	{
-		public override void Handle()
+        public PausedState(ExcavationRecord record)
+        {
+            _record = record;
+        }
+        public override void Handle()
 		{
-			throw new NotImplementedException();
-		}
+            StateChangeCheck();
+        }
 
 		protected override void StateChangeCheck()
 		{
-			throw new NotImplementedException();
-		}
+            _record.State = ExcavationState.Completed;
+            _record.SetState(new CompletedState(_record));
+        }
 	}
 }

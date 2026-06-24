@@ -6,76 +6,16 @@ namespace ArchaeologicalSiteManagement.Models
 {
 	public class ArchaeologicalSite
 	{
-		public Guid Id
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+		public Guid Id { get; set; }
 
-		public string Name
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+        public string Name { get; set; }
 
-		public string Location
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+        public string Location { get; set; }
 
-		public string Civilization
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+        public string Civilization { get; set; }
 
-		public int DiscoveryYear
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+        public int DiscoveryYear { get; set; }
 
-		public string SiteType
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-	}
+        public string SiteType { get; set; }
+    }
 }

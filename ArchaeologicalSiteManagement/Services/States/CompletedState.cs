@@ -1,3 +1,4 @@
+using ArchaeologicalSiteManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,13 +7,18 @@ namespace ArchaeologicalSiteManagement.Services.States
 {
 	public class CompletedState : ExcavationStateBase
 	{
-		public override void Handle()
+        public CompletedState(ExcavationRecord record)
+        {
+            _record = record;
+        }
+        public override void Handle()
 		{
-			throw new NotImplementedException();
-		}
+            StateChangeCheck();
+        }
 
 		protected override void StateChangeCheck()
 		{
+			// nema dalje jer je poslednje stanje
 			throw new NotImplementedException();
 		}
 	}

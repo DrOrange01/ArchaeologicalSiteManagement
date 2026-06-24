@@ -7,98 +7,30 @@ namespace ArchaeologicalSiteManagement.Models
 {
 	public class ExcavationRecord
 	{
-		public Guid Id
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+		public Guid Id { get; set; }
 
-		public guid SiteId
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+        public Guid SiteId { get; set; }
 
-		public DateTime ExcavationDate
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+        public DateTime ExcavationDate { get; set; }
 
-		public double AreaExcavatedM2
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+        public double AreaExcavatedM2 { get; set; }
 
-		public double ArtifactsFound
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+		public double ArtifactsFound { get; set; }
 
-		public double DepthReachedCm
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+        public double DepthReachedCm { get; set; }
 
-		private ExcavationState state
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+		public ExcavationState State { get; set; }
 
-		public void SetState(ExcavationStateBase newState)
+        private ExcavationStateBase _stateBase;
+
+        public void SetState(ExcavationStateBase newState)
 		{
-			throw new NotImplementedException();
-		}
+            _stateBase = newState;
+        }
 
 		public void SimulateNext()
 		{
-			throw new NotImplementedException();
-		}
+            _stateBase?.Handle();
+        }
 	}
 }

@@ -1,19 +1,25 @@
+using ArchaeologicalSiteManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ArchaeologicalSiteManagement.Services.States
 {
-	public abstract class ActiveState : ExcavationStateBase
+	public class ActiveState : ExcavationStateBase
 	{
-		public override void Handle()
+        public ActiveState(ExcavationRecord record)
+        {
+            _record = record;
+        }
+        public override void Handle()
 		{
-			throw new NotImplementedException();
-		}
+            StateChangeCheck();
+        }
 
 		protected override void StateChangeCheck()
 		{
-			throw new NotImplementedException();
-		}
+            _record.State = ExcavationState.Paused;
+            _record.SetState(new PausedState(_record));
+        }
 	}
 }
