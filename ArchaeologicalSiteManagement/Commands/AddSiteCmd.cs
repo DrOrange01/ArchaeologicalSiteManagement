@@ -1,19 +1,26 @@
+using ArchaeologicalSiteManagement.Interfaces;
+using ArchaeologicalSiteManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ArchaeologicalSiteManagement.Commands
 {
-	public abstract class AddSiteCmd : SiteCommand
+	public class AddSiteCmd : SiteCommand
 	{
-		public override void Execute()
+        public AddSiteCmd(ISiteRepository repository, ArchaeologicalSite site)
+        {
+            _repository = repository;
+            _site = site;
+        }
+        public override void Execute()
 		{
-			throw new NotImplementedException();
-		}
+            _repository.Add(_site);
+        }
 
 		public override void Undo()
 		{
-			throw new NotImplementedException();
-		}
+            _repository.Delete(_site.Id);
+        }
 	}
 }

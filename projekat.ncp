@@ -123,7 +123,7 @@
         <Collapsed>False</Collapsed>
         <Member type="Method">public override void Handle()</Member>
         <Member type="Method">protected override void StateChangeCheck()</Member>
-        <Modifier>Abstract</Modifier>
+        <Modifier>None</Modifier>
       </Entity>
       <Entity type="Class">
         <Name>PausedState</Name>
@@ -238,7 +238,7 @@
         <Collapsed>False</Collapsed>
         <Member type="Method">public override void Execute()</Member>
         <Member type="Method">public override void Undo()</Member>
-        <Modifier>Abstract</Modifier>
+        <Modifier>None</Modifier>
       </Entity>
       <Entity type="Class">
         <Name>EditSiteCmd</Name>
@@ -256,8 +256,8 @@
         <Location left="1351" top="1721" />
         <Size width="162" height="216" />
         <Collapsed>False</Collapsed>
-        <Member type="Field">ISiteRepository _siteRepository</Member>
-        <Member type="Field">IExcavationRepository _excRepository</Member>
+        <Member type="Field">private ISiteRepository _siteRepository</Member>
+        <Member type="Field">private IExcavationRepository _excRepository</Member>
         <Member type="Method">public List&lt;ArchaeologicalSite&gt; GetAllSites()</Member>
         <Member type="Method">public List&lt;ExcavationRecord&gt; GetExcavationRecords(Guid siteId, int year)</Member>
         <Modifier>None</Modifier>

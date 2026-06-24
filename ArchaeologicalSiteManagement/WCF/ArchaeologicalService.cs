@@ -8,17 +8,24 @@ namespace ArchaeologicalSiteManagement.WCF
 {
 	public class ArchaeologicalService : IArchaeologicalService
     {
-		ISiteRepository _siteRepository;
-		IExcavationRepository _excRepository;
+        private ISiteRepository _siteRepository;
+        private IExcavationRepository _excRepository;
 
-		public List<ArchaeologicalSite> GetAllSites()
+        public ArchaeologicalService(ISiteRepository siteRepository, IExcavationRepository excRepository)
+        {
+            _siteRepository = siteRepository;
+            _excRepository = excRepository;
+        }
+
+        public List<ArchaeologicalSite> GetAllSites()
 		{
-			throw new NotImplementedException();
-		}
+            return _siteRepository.GetAll();
+        }
 
 		public List<ExcavationRecord> GetExcavationRecords(Guid siteId, int year)
 		{
-			throw new NotImplementedException();
-		}
+            return _excRepository.GetBySiteIdAndYear(siteId, year);
+
+        }
 	}
 }

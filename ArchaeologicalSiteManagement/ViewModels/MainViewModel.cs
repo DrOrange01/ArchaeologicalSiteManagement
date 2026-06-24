@@ -1,97 +1,128 @@
+using ArchaeologicalSiteManagement.Commands;
+using ArchaeologicalSiteManagement.Interfaces;
+using ArchaeologicalSiteManagement.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using ArchaeologicalSiteManagement.Models;
-using ArchaeologicalSiteManagement.Interfaces;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Text;
 
 namespace ArchaeologicalSiteManagement.ViewModels
 {
-	public class MainViewModel
-	{
+	public class MainViewModel : INotifyPropertyChanged
+    {
 		ISiteRepository _siteRepository;
 		IExcavationRepository _excRepository;
 		IPersistenceService _persistenceService;
 		Stack<ICommand> _undoStack;
 		Stack<ICommand> _redoStack;
 
-		public ObservableCollection<ArchaeologicalSite> Sites
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private ObservableCollection<ArchaeologicalSite> _sites;
+        private ObservableCollection<ExcavationRecord> _records;
+
+        public ObservableCollection<ArchaeologicalSite> Sites
 		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+			get { return _sites; }
+			set { _sites = value; OnPropertyChanged(nameof(Sites)); }
 		}
 
 		public ObservableCollection<ExcavationRecord> Records
 		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
+            get { return _records; }
+            set { _records = value; OnPropertyChanged(nameof(Records)); }
+        }
 
-		public void AddSite()
-		{
-			throw new NotImplementedException();
-		}
+        public MainViewModel(ISiteRepository siteRepository, IExcavationRepository excRepository, IPersistenceService persistenceService)
+        {
+            _siteRepository = siteRepository;
+            _excRepository = excRepository;
+            _persistenceService = persistenceService;
+            _undoStack = new Stack<ICommand>();
+            _redoStack = new Stack<ICommand>();
 
-		public void UpdateSite()
-		{
-			throw new NotImplementedException();
-		}
+            Sites = new ObservableCollection<ArchaeologicalSite>(_siteRepository.GetAll());
+            Records = new ObservableCollection<ExcavationRecord>(_excRepository.GetAll());
+        }
 
-		public void DeleteSite()
-		{
-			throw new NotImplementedException();
-		}
+        public void AddSite(ArchaeologicalSite site)
+        {
+            ExecuteCommand(new AddSiteCmd(_siteRepository, site));
+            Sites = new ObservableCollection<ArchaeologicalSite>(_siteRepository.GetAll());
+        }
 
-		public void AddRecord()
-		{
-			throw new NotImplementedException();
-		}
+        public void UpdateSite(ArchaeologicalSite oldSite, ArchaeologicalSite newSite)
+        {
+            ExecuteCommand(new EditSiteCmd(_siteRepository, oldSite, newSite));
+            Sites = new ObservableCollection<ArchaeologicalSite>(_siteRepository.GetAll());
+        }
 
-		public void UpdateRecord()
-		{
-			throw new NotImplementedException();
-		}
+        public void DeleteSite(ArchaeologicalSite site)
+        {
+            ExecuteCommand(new DeleteSiteCmd(_siteRepository, site));
+            Sites = new ObservableCollection<ArchaeologicalSite>(_siteRepository.GetAll());
+        }
 
-		public void DeleteRecord()
-		{
-			throw new NotImplementedException();
-		}
+        public void AddRecord(ExcavationRecord record)
+        {
+            _excRepository.Add(record);
+            Records = new ObservableCollection<ExcavationRecord>(_excRepository.GetAll());
+        }
 
-		public void Undo()
-		{
-			throw new NotImplementedException();
-		}
+        public void UpdateRecord(ExcavationRecord record)
+        {
+            _excRepository.Update(record);
+            Records = new ObservableCollection<ExcavationRecord>(_excRepository.GetAll());
+        }
 
-		public void Redo()
-		{
-			throw new NotImplementedException();
-		}
+        public void DeleteRecord(Guid id)
+        {
+            _excRepository.Delete(id);
+            Records = new ObservableCollection<ExcavationRecord>(_excRepository.GetAll());
+        }
 
-		public void ExecuteCommand(ICommand cmd)
-		{
-			throw new NotImplementedException();
-		}
+        public void Undo()
+        {
+            if (_undoStack.Count == 0) return;
+            ICommand cmd = _undoStack.Pop();
+            cmd.Undo();
+            _redoStack.Push(cmd);
+            Sites = new ObservableCollection<ArchaeologicalSite>(_siteRepository.GetAll());
+        }
 
-		public void LoadData()
-		{
-			throw new NotImplementedException();
-		}
+        public void Redo()
+        {
+            if (_redoStack.Count == 0) return;
+            ICommand cmd = _redoStack.Pop();
+            cmd.Execute();
+            _undoStack.Push(cmd);
+            Sites = new ObservableCollection<ArchaeologicalSite>(_siteRepository.GetAll());
+        }
 
-		public void SaveData()
+        public void ExecuteCommand(ICommand cmd)
 		{
-			throw new NotImplementedException();
-		}
-	}
+            cmd.Execute();
+            _undoStack.Push(cmd);
+            _redoStack.Clear();
+        }
+
+        public void LoadData()
+        {
+            var sites = _persistenceService.LoadSites();
+            var records = _persistenceService.LoadRecords();
+            Sites = new ObservableCollection<ArchaeologicalSite>(sites);
+            Records = new ObservableCollection<ExcavationRecord>(records);
+        }
+
+        public void SaveData()
+        {
+            _persistenceService.Save(Sites.ToList(), Records.ToList());
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
 }

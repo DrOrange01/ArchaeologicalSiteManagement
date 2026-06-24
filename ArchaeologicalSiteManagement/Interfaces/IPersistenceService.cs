@@ -9,6 +9,7 @@ namespace ArchaeologicalSiteManagement.Interfaces
 	{
 		void Save(List<ArchaeologicalSite> sites, List<ExcavationRecord> records);
 
-		void Load();
-	}
+        List<ArchaeologicalSite> LoadSites();
+        List<ExcavationRecord> LoadRecords();
+    }
 }

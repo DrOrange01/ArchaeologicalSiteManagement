@@ -17,8 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CoreWCF.Primitives" Version="1.9.1" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.5" />
+    <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="181.25.0" />
     <PackageReference Include="System.ServiceModel.Http" Version="10.0.652802" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="10.0.652802" />
   </ItemGroup>
 
 </Project>
