@@ -28,6 +28,9 @@
         <Member type="Method">void Add(ExcavationRecord record)</Member>
         <Member type="Method">void Update(ExcavationRecord record)</Member>
         <Member type="Method">void Delete(Guid id)</Member>
+        <Member type="Method">void RegisterObserver()</Member>
+        <Member type="Method">void UnregisterObserver()</Member>
+        <Member type="Method">void NotifyObservers()</Member>
       </Entity>
       <Entity type="Class">
         <Name>SiteRepository</Name>

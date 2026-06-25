@@ -18,5 +18,9 @@ namespace ArchaeologicalSiteManagement.Interfaces
 		void Update(ExcavationRecord record);
 
 		void Delete(Guid id);
-	}
+		public void RegisterObserver(IObserver o);
+		public void UnregisterObserver(IObserver o);
+
+		public void NotifyObservers();
+    }
 }
