@@ -13,7 +13,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Top buttons -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
             <Button Content="Undo" Width="80" Margin="5,0" Click="Undo_Click"/>
             <Button Content="Redo" Width="80" Margin="5,0" Click="Redo_Click"/>
@@ -21,10 +20,8 @@
             <Button Content="Load" Width="80" Margin="5,0" Click="Load_Click"/>
         </StackPanel>
 
-        <!-- Tabs -->
         <TabControl Grid.Row="1" Margin="0,10,0,0">
 
-            <!-- Tab 1: Sites -->
             <TabItem Header="Archaeological Sites">
                 <Grid Margin="10">
                     <Grid.ColumnDefinitions>
@@ -32,7 +29,6 @@
                         <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- DataGrid -->
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="35"/>
@@ -64,7 +60,6 @@
                         </StackPanel>
                     </Grid>
 
-                    <!-- Form -->
                     <StackPanel Grid.Column="1" Margin="10,0,0,0">
                         <TextBlock Text="Name" Margin="0,5"/>
                         <TextBox Text="{Binding FormSite.Name, UpdateSourceTrigger=PropertyChanged}"/>
@@ -80,7 +75,6 @@
                 </Grid>
             </TabItem>
 
-            <!-- Tab 2: Excavations -->
             <TabItem Header="Excavation Records">
                 <Grid Margin="10">
                     <Grid.ColumnDefinitions>
@@ -109,7 +103,6 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <!-- Chart -->
                         <lvc:PieChart Grid.Row="1" Series="{Binding ChartVM.Series}" Margin="0,10,10,0"/>
 
                         <StackPanel Grid.Row="2" Orientation="Horizontal">
@@ -120,7 +113,6 @@
                         </StackPanel>
                     </Grid>
 
-                    <!-- Form -->
                     <StackPanel Grid.Column="1" Margin="10,0,0,0">
                         <TextBlock Text="Excavation Date" Margin="0,5"/>
                         <DatePicker SelectedDate="{Binding FormRecord.ExcavationDate}"/>
