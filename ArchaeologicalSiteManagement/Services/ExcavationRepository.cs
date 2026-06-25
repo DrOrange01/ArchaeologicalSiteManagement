@@ -17,9 +17,9 @@ namespace ArchaeologicalSiteManagement.Services
             _observers = new List<IObserver>();
             _records = new List<ExcavationRecord>
             {
-                new ExcavationRecord { Id = Guid.NewGuid(), SiteId = Guid.Empty, ExcavationDate = new DateTime(2024, 5, 10), AreaExcavatedM2 = 12.5, ArtifactsFound = 7, DepthReachedCm = 180, State = ExcavationState.Active },
-                new ExcavationRecord { Id = Guid.NewGuid(), SiteId = Guid.Empty, ExcavationDate = new DateTime(2024, 6, 15), AreaExcavatedM2 = 8.0, ArtifactsFound = 3, DepthReachedCm = 145, State = ExcavationState.Paused },
-                new ExcavationRecord { Id = Guid.NewGuid(), SiteId = Guid.Empty, ExcavationDate = new DateTime(2024, 7, 20), AreaExcavatedM2 = 20.0, ArtifactsFound = 12, DepthReachedCm = 210, State = ExcavationState.Completed }
+                new ExcavationRecord { Id = Guid.NewGuid(), SiteId = SiteRepository.ViminaciumId, ExcavationDate = new DateTime(2024, 5, 10), AreaExcavatedM2 = 12.5, ArtifactsFound = 7, DepthReachedCm = 180, State = ExcavationState.Active },
+                new ExcavationRecord { Id = Guid.NewGuid(), SiteId = SiteRepository.LepenskiVirId, ExcavationDate = new DateTime(2024, 6, 15), AreaExcavatedM2 = 8.0, ArtifactsFound = 3, DepthReachedCm = 145, State = ExcavationState.Paused },
+                new ExcavationRecord { Id = Guid.NewGuid(), SiteId = SiteRepository.FelixRomukianaId, ExcavationDate = new DateTime(2024, 7, 20), AreaExcavatedM2 = 20.0, ArtifactsFound = 12, DepthReachedCm = 210, State = ExcavationState.Completed }
             };
 
             foreach (var record in _records)

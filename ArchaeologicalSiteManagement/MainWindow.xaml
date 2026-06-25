@@ -35,11 +35,15 @@
                     <!-- DataGrid -->
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="35"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
 
-                        <DataGrid Grid.Row="0" ItemsSource="{Binding Sites}"
+                        <TextBox Grid.Row="0" Text="{Binding SearchSite, UpdateSourceTrigger=PropertyChanged}" 
+                                 Margin="0,0,10,5"/>
+
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding Sites}"
                                   SelectedItem="{Binding SelectedSite}"
                                   AutoGenerateColumns="False"
                                   IsReadOnly="True"
@@ -53,7 +57,7 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
                             <Button Content="Add" Width="80" Margin="5,0" Click="AddSite_Click"/>
                             <Button Content="Edit" Width="80" Margin="5,0" Click="EditSite_Click"/>
                             <Button Content="Delete" Width="80" Margin="5,0" Click="DeleteSite_Click"/>
@@ -112,6 +116,7 @@
                             <Button Content="Add" Width="80" Margin="5,0" Click="AddRecord_Click"/>
                             <Button Content="Edit" Width="80" Margin="5,0" Click="EditRecord_Click"/>
                             <Button Content="Delete" Width="80" Margin="5,0" Click="DeleteRecord_Click"/>
+                            <Button Content="Simulate Next" Width="110" Margin="5,0" Click="SimulateNext_Click"/>
                         </StackPanel>
                     </Grid>
 

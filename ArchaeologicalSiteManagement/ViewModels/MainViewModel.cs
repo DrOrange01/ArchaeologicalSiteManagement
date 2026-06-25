@@ -1,4 +1,5 @@
 using ArchaeologicalSiteManagement.Commands;
+using ArchaeologicalSiteManagement.Helpers;
 using ArchaeologicalSiteManagement.Interfaces;
 using ArchaeologicalSiteManagement.Models;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
+using System.Windows;
 
 namespace ArchaeologicalSiteManagement.ViewModels
 {
@@ -26,6 +28,8 @@ namespace ArchaeologicalSiteManagement.ViewModels
         private ExcavationRecord _selectedRecord;
         private ArchaeologicalSite _formSite;
         private ExcavationRecord _formRecord;
+        private string _searchSite;
+        private ILogger _logger;
 
         public ObservableCollection<ArchaeologicalSite> Sites
 		{
@@ -38,17 +42,70 @@ namespace ArchaeologicalSiteManagement.ViewModels
             get { return _records; }
             set { _records = value; OnPropertyChanged(nameof(Records)); }
         }
+        public string SearchSite
+        {
+            get { return _searchSite; }
+            set
+            {
+                _searchSite = value;
+                OnPropertyChanged(nameof(SearchSite));
+                FilterSites();
+            }
+        }
+
+        private void FilterSites()
+        {
+            if (string.IsNullOrWhiteSpace(_searchSite))
+            {
+                Sites = new ObservableCollection<ArchaeologicalSite>(_siteRepository.GetAll());
+                return;
+            }
+
+            var filtered = _siteRepository.GetAll().Where(s =>
+                s.Name.Contains(_searchSite, StringComparison.OrdinalIgnoreCase) ||
+                s.Location.Contains(_searchSite, StringComparison.OrdinalIgnoreCase) ||
+                s.Civilization.Contains(_searchSite, StringComparison.OrdinalIgnoreCase) ||
+                s.DiscoveryYear.ToString().Contains(_searchSite) ||
+                s.SiteType.Contains(_searchSite, StringComparison.OrdinalIgnoreCase)
+            ).ToList();
+
+            Sites = new ObservableCollection<ArchaeologicalSite>(filtered);
+        }
+        public void SimulateNext()
+        {
+            if (SelectedRecord == null) return;
+
+            if (SelectedRecord.State == ExcavationState.Completed || SelectedRecord.State == ExcavationState.Abandoned)
+            {
+                MessageBox.Show("This record is already in its last state.", "Information",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            SelectedRecord.SimulateNext();
+            _excRepository.Update(SelectedRecord);
+            Records = new ObservableCollection<ExcavationRecord>(_excRepository.GetAll());
+            _logger.Log($"Simulation state for record: {SelectedRecord.Id}, new state: {SelectedRecord.State}");
+        }
 
         public ArchaeologicalSite SelectedSite
         {
             get { return _selectedSite; }
-            set { _selectedSite = value; OnPropertyChanged(nameof(SelectedSite)); }
+            set
+            {
+                _selectedSite = value;
+                OnPropertyChanged(nameof(SelectedSite));
+            }
         }
         
         public ExcavationRecord SelectedRecord
         {
             get { return _selectedRecord; }
-            set { _selectedRecord = value; OnPropertyChanged(nameof(SelectedRecord)); }
+            set
+            {
+                _selectedRecord = value;
+                OnPropertyChanged(nameof(SelectedRecord));
+            }
         }
 
         public ArchaeologicalSite FormSite
@@ -74,6 +131,7 @@ namespace ArchaeologicalSiteManagement.ViewModels
             ChartVM = new ChartViewModel();
             _excRepository.RegisterObserver(ChartVM);
             ChartVM.Update(_excRepository.GetAll());
+            _logger = new FileLogger();
 
             Sites = new ObservableCollection<ArchaeologicalSite>(_siteRepository.GetAll());
             Records = new ObservableCollection<ExcavationRecord>(_excRepository.GetAll());
@@ -94,6 +152,8 @@ namespace ArchaeologicalSiteManagement.ViewModels
             ExecuteCommand(new AddSiteCmd(_siteRepository, newSite));
             Sites = new ObservableCollection<ArchaeologicalSite>(_siteRepository.GetAll());
             FormSite = new ArchaeologicalSite();
+
+            _logger.Log($"Site added: {newSite.Name}");
         }
 
         public void UpdateSite(ArchaeologicalSite oldSite, ArchaeologicalSite newSite)
@@ -111,12 +171,16 @@ namespace ArchaeologicalSiteManagement.ViewModels
             ExecuteCommand(new EditSiteCmd(_siteRepository, oldSite, updatedSite));
             Sites = new ObservableCollection<ArchaeologicalSite>(_siteRepository.GetAll());
             FormSite = new ArchaeologicalSite();
+
+            _logger.Log($"Site updated: {updatedSite.Name}");
         }
 
         public void DeleteSite(ArchaeologicalSite site)
         {
             ExecuteCommand(new DeleteSiteCmd(_siteRepository, site));
             Sites = new ObservableCollection<ArchaeologicalSite>(_siteRepository.GetAll());
+
+            _logger.Log($"Site delted: {site.Name}");
         }
 
         public void AddRecord(ExcavationRecord record)
@@ -135,6 +199,8 @@ namespace ArchaeologicalSiteManagement.ViewModels
             _excRepository.Add(newRecord);
             Records = new ObservableCollection<ExcavationRecord>(_excRepository.GetAll());
             FormRecord = new ExcavationRecord();
+
+            _logger.Log($"Added excavation record for SiteId: {record.SiteId}");
         }
 
         public void UpdateRecord(ExcavationRecord record)
@@ -153,12 +219,16 @@ namespace ArchaeologicalSiteManagement.ViewModels
             _excRepository.Update(updatedRecord);
             Records = new ObservableCollection<ExcavationRecord>(_excRepository.GetAll());
             FormRecord = new ExcavationRecord();
+
+            _logger.Log($"Excavation record updated: {record.Id}");
         }
 
         public void DeleteRecord(Guid id)
         {
             _excRepository.Delete(id);
             Records = new ObservableCollection<ExcavationRecord>(_excRepository.GetAll());
+
+            _logger.Log($"Excavation record deleted: {id}");
         }
 
         public void Undo()
@@ -197,6 +267,15 @@ namespace ArchaeologicalSiteManagement.ViewModels
         public void SaveData()
         {
             _persistenceService.Save(Sites.ToList(), Records.ToList());
+        }
+
+        public bool ValidateSite(ArchaeologicalSite site)
+        {
+            return !string.IsNullOrWhiteSpace(site.Name)
+                && !string.IsNullOrWhiteSpace(site.Location)
+                && !string.IsNullOrWhiteSpace(site.Civilization)
+                && site.DiscoveryYear > 0
+                && !string.IsNullOrWhiteSpace(site.SiteType);
         }
 
         public ChartViewModel ChartVM { get; set; }

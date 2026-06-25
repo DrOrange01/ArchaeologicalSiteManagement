@@ -11,13 +11,17 @@ namespace ArchaeologicalSiteManagement.Services
 	{
 		List<ArchaeologicalSite> _sites;
 
+        public static readonly Guid ViminaciumId = Guid.NewGuid();
+        public static readonly Guid LepenskiVirId = Guid.NewGuid();
+        public static readonly Guid FelixRomukianaId = Guid.NewGuid();
+
         public SiteRepository()
         {
             _sites = new List<ArchaeologicalSite>
             {
-                new ArchaeologicalSite { Id = Guid.NewGuid(), Name = "Viminacium", Location = "Kostolac", Civilization = "Rimska", DiscoveryYear = 1882, SiteType = "Nekropola" },
-                new ArchaeologicalSite { Id = Guid.NewGuid(), Name = "Lepenski Vir", Location = "Boljetin", Civilization = "Mezolitska", DiscoveryYear = 1965, SiteType = "Naselje" },
-                new ArchaeologicalSite { Id = Guid.NewGuid(), Name = "Felix Romuliana", Location = "Gamzigrad", Civilization = "Rimska", DiscoveryYear = 1953, SiteType = "Utvrdjenje" }
+                new ArchaeologicalSite { Id = ViminaciumId, Name = "Viminacium", Location = "Kostolac", Civilization = "Rimska", DiscoveryYear = 1882, SiteType = "Nekropola" },
+                new ArchaeologicalSite { Id = LepenskiVirId, Name = "Lepenski Vir", Location = "Boljetin", Civilization = "Mezolitska", DiscoveryYear = 1965, SiteType = "Naselje" },
+                new ArchaeologicalSite { Id = FelixRomukianaId, Name = "Felix Romuliana", Location = "Gamzigrad", Civilization = "Rimska", DiscoveryYear = 1953, SiteType = "Utvrdjenje" }
             };
         }
 
